@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #d2d2cf;
+}
+
+#input {
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  padding: 8px;
+}
