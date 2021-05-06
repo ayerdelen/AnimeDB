@@ -29,4 +29,22 @@ body {
 
 .card-info {
   display: flex;
+  justify-content: space-between;
+}
+
+.img {
+  max-height: 400px;
+}
+
+.card-title {
+  max-height: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .img {
+    min-height: 400px;
+  }
+  .card-info {
+    padding-bottom: 20px;
+  }
 }
