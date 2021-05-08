@@ -57,7 +57,13 @@ const getResults = async (value) => {
   }
   if (error) {
     inputValue.classList.add("error");
-    cardSection.innerHTML = "Sorry Couldn't find any";
+    let errorHTML = `
+    <div class="img-container">
+    <img className="error-img" src="sad.jpg" /> 
+    <h1>Sorry, I couldn't find anything...</h1>
+    </div>
+    `;
+    cardSection.innerHTML = errorHTML;
   }
 
   inputValue.value = "";

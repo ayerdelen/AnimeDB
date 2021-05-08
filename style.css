@@ -64,6 +64,11 @@ body {
   display: none;
 }
 
+.logo {
+  width: 70px;
+  height: 60px;
+}
+
 @media screen and (max-width: 768px) {
   .img {
     min-height: 400px;
