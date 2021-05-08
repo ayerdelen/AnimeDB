@@ -30,6 +30,7 @@ body {
 .card-info {
   display: flex;
   justify-content: space-between;
+  height: 85px;
 }
 
 .img {
@@ -39,6 +40,9 @@ body {
 .card-title {
   max-height: 20px;
 }
+.error {
+  border: 1px solid red !important;
+}
 
 @media screen and (max-width: 768px) {
   .img {
@@ -46,5 +50,6 @@ body {
   }
   .card-info {
     padding-bottom: 20px;
+    height: 100px;
   }
 }
