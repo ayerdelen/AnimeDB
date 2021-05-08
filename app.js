@@ -10,15 +10,7 @@ let error = false;
 let loading = true;
 
 window.addEventListener("load", function () {
-  if (loading) {
-    let html = ` 
-    <h1>Loading...</h1>
-  `;
-    loadingContent.innerHTML = html;
-  }
-  if (!loading) {
-    loadingContent.firstElementChild.innerHTML = "başka";
-  }
+  loading = false;
 });
 
 function setQuery(e) {
@@ -43,10 +35,8 @@ const getAnime = async (id) => {
 
   if (animes.data) {
     createCard(animes.data);
-    loading = false;
   }
 };
-console.log(loadingContent);
 
 const getResults = async (value) => {
   cardSection.innerHTML = "";
@@ -74,12 +64,14 @@ const getResults = async (value) => {
 };
 
 function createCard(animes) {
+  const backgroundColor = "";
   const {
     canonicalTitle,
     posterImage,
     averageRating,
     type,
   } = animes.attributes;
+
   let html = `
   <div class="col-lg-4 col-sm-6 mb-3">
   <div class="card">
@@ -90,9 +82,14 @@ function createCard(animes) {
     <div class="card-body">
       <div class="card-info">
         <h5 class="card-title">${canonicalTitle}</h5>
-        <h4><span class="badge bg-secondary">${
-          averageRating ? averageRating : "0.00"
-        }</span></h4>
+        <h4><span class="badge bg-secondary ${
+          averageRating >= 80
+            ? "green"
+            : averageRating < 80 && averageRating > 65
+            ? "yellow"
+            : "red"
+        }"
+        >${averageRating ? averageRating : "0.00"}</span></h4>
       </div>
       <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
     </div>
@@ -100,6 +97,21 @@ function createCard(animes) {
 </div>
   `;
   cardSection.innerHTML += html;
+
+  let badge = cardSection.querySelector(".badge");
+  // badge.forEach((item) => {
+  //   if (item.averageRating > 80) {
+  //     item.classList.add("green");
+  //   }
+  // });
 }
 
-getNumbLoop();
+const loadin = async () => {
+  let timeout = setTimeout(() => {
+    loadingContent.classList.add("hide-loading");
+    getNumbLoop();
+  }, 3000);
+  return () => clearTimeout(timeout);
+};
+
+loadin();

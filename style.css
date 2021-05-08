@@ -43,6 +43,26 @@ body {
 .error {
   border: 1px solid red !important;
 }
+.green {
+  background-color: rgb(20, 173, 0) !important;
+}
+.red {
+  background-color: rgb(119, 0, 0) !important;
+}
+
+.yellow {
+  background-color: rgb(252, 176, 63) !important;
+}
+
+.loading-content {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hide-loading {
+  display: none;
+}
 
 @media screen and (max-width: 768px) {
   .img {
