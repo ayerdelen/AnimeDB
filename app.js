@@ -19,23 +19,18 @@ function setQuery(e) {
   }
 }
 
-//Ekrana yazdıracağım id ye göre ilk 20 apiyi dönüyorum
-const getNumbLoop = async () => {
-  for (let i = 1; i <= numb; i++) {
-    await getAnime(i);
-  }
-};
 //Api çektim
-const getAnime = async (id) => {
+const getAnime = async () => {
   loading = false;
-  const url = `https://kitsu.io/api/edge/anime/${id}`;
+  const url = `https://kitsu.io/api/edge/anime/`;
   const response = await fetch(url);
   const animes = await response.json();
-
   if (animes.data) {
+    animes.data.map((anime) => {
+      createCard(anime);
+    });
     if (!loading) {
       loadingContent.classList.add("hide-loading");
-      createCard(animes.data);
     }
   }
 };
@@ -77,12 +72,7 @@ const getResults = async (value) => {
 };
 
 function createCard(animes) {
-  const {
-    canonicalTitle,
-    posterImage,
-    averageRating,
-    type,
-  } = animes.attributes;
+  const { canonicalTitle, posterImage, averageRating } = animes.attributes;
 
   let html = `
   <div class="col-lg-4 col-sm-6 mb-3">
@@ -124,17 +114,48 @@ function getDetail(e) {
   fetch(`https://kitsu.io/api/edge/anime/${animeId}`)
     .then((res) => res.json())
     .then((anime) => {
-      console.log(anime);
-      createCard(anime.data);
+      console.log(anime.data);
+      detailPage(anime.data);
     });
 }
 
-function detailPage(anime) {
+function detailPage(animes) {
   const {
     canonicalTitle,
     posterImage,
     averageRating,
-    type,
+    showType,
+    episodeCount,
+    synopsis,
   } = animes.attributes;
+  let html = `
+  <div class="detail-container container">
+  <div class="image-content">
+  <img class="detail-img img" src=${posterImage.original} />
+  </div>
+  <div class="detail-content">
+  <div class="info">
+  <h5 class="card-title">${canonicalTitle}</h5>
+  <h4><span class="badge bg-secondary ${
+    averageRating >= 80
+      ? "green"
+      : averageRating < 80 && averageRating > 65
+      ? "yellow"
+      : "red"
+  }"
+  >${averageRating ? averageRating : "0.00"}</span></h4>
+</div>
+<div class="detail-info d-flex">
+<p class="type"><span>Type: ${showType}</span></p>
+<p><span>Episode: ${episodeCount}</span></p>
+</div>
+<p class="synopsis">${synopsis}</p>
+</div>
+  </div>
+
+  `;
+  cardSection.innerHTML = "";
+  cardSection.innerHTML = html;
 }
-getNumbLoop();
+
+getAnime();
