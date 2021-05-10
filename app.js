@@ -9,14 +9,11 @@ const numb = 20;
 let error = false;
 let loading = true;
 
-window.addEventListener("load", function () {
-  loading = false;
-});
-
 function setQuery(e) {
   //Enter'a basıldıysa
   if (e.keyCode == 13) {
     e.preventDefault();
+    loadingContent.classList.remove("hide-loading");
     getResults(e.target.value);
   }
 }
@@ -29,17 +26,22 @@ const getNumbLoop = async () => {
 };
 //Api çektim
 const getAnime = async (id) => {
+  loading = false;
   const url = `https://kitsu.io/api/edge/anime/${id}`;
   const response = await fetch(url);
   const animes = await response.json();
 
   if (animes.data) {
-    createCard(animes.data);
+    if (!loading) {
+      loadingContent.classList.add("hide-loading");
+      createCard(animes.data);
+    }
   }
 };
 
 const getResults = async (value) => {
   cardSection.innerHTML = "";
+  loading = false;
   const url = `https://kitsu.io/api/edge/anime?filter[text]=${value}`;
   const response = await fetch(url);
   const search = await response.json();
@@ -47,7 +49,10 @@ const getResults = async (value) => {
 
   if (search.data && search.data.length > 0) {
     search.data.forEach((item) => {
-      createCard(item);
+      if (!loading) {
+        loadingContent.classList.add("hide-loading");
+        createCard(item);
+      }
     });
     error = false;
     inputValue.classList.remove("error");
@@ -56,11 +61,12 @@ const getResults = async (value) => {
     error = true;
   }
   if (error) {
+    loadingContent.classList.add("hide-loading");
     inputValue.classList.add("error");
     let errorHTML = `
     <div class="img-container">
-    <img className="error-img" src="sad.jpg" /> 
-    <h1>Sorry, I couldn't find anything...</h1>
+    <img class="error-img img" src="sad.jpg" /> 
+    <h1 class="text-danger">Sorry, I couldn't find anything...</h1>
     </div>
     `;
     cardSection.innerHTML = errorHTML;
@@ -105,19 +111,6 @@ function createCard(animes) {
   cardSection.innerHTML += html;
 
   let badge = cardSection.querySelector(".badge");
-  // badge.forEach((item) => {
-  //   if (item.averageRating > 80) {
-  //     item.classList.add("green");
-  //   }
-  // });
 }
 
-const loadin = async () => {
-  let timeout = setTimeout(() => {
-    loadingContent.classList.add("hide-loading");
-    getNumbLoop();
-  }, 3000);
-  return () => clearTimeout(timeout);
-};
-
-loadin();
+getNumbLoop();
