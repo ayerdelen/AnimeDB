@@ -5,6 +5,7 @@ const loadingContent = document.querySelector(".loading-content");
 
 //addeventlisteners
 inputValue.addEventListener("keypress", setQuery);
+
 const numb = 20;
 let error = false;
 let loading = true;
@@ -76,7 +77,6 @@ const getResults = async (value) => {
 };
 
 function createCard(animes) {
-  const backgroundColor = "";
   const {
     canonicalTitle,
     posterImage,
@@ -103,14 +103,38 @@ function createCard(animes) {
         }"
         >${averageRating ? averageRating : "0.00"}</span></h4>
       </div>
-      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+     <a href="#" data-id=${
+       animes.id
+     } type="button" class="btn btn-primary">Detail</a>
     </div>
   </div>
 </div>
   `;
   cardSection.innerHTML += html;
 
-  let badge = cardSection.querySelector(".badge");
+  let btns = cardSection.querySelectorAll(".btn");
+  btns.forEach((btn) => {
+    btn.addEventListener("click", getDetail);
+  });
 }
 
+function getDetail(e) {
+  e.preventDefault();
+  const animeId = e.currentTarget.dataset.id;
+  fetch(`https://kitsu.io/api/edge/anime/${animeId}`)
+    .then((res) => res.json())
+    .then((anime) => {
+      console.log(anime);
+      createCard(anime.data);
+    });
+}
+
+function detailPage(anime) {
+  const {
+    canonicalTitle,
+    posterImage,
+    averageRating,
+    type,
+  } = animes.attributes;
+}
 getNumbLoop();

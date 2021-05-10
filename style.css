@@ -31,7 +31,7 @@ body {
   display: flex;
   justify-content: space-between;
   height: 85px;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .img {
@@ -76,7 +76,7 @@ body {
   align-items: center;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1200px) {
   .img {
     min-height: 400px;
   }
